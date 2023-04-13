@@ -126,11 +126,11 @@ public class WellnessGroups {
     }
 
     // A helper function for tests that determines whether an allocation of students is valid.
-    // If the allocation is valid, returns the lowest number of preferred workshops a student
-    // received (excluding students with no preferred workshops).
+    // If the allocation is valid, returns the total number of students in workshops that they want.
     // If the allocation is invalid, returns -1 and prints out the issue.
     private static int isValid(List<Student> students, List<Workshop> workshops) {
         int fewestPreferred = Integer.MAX_VALUE;
+        int happiness = 0;
         for (Student s : students) {
             int preferredCount = 0;
             if (s.sessions[0] == null || s.sessions[1] == null || s.sessions[2] == null) {
@@ -142,6 +142,7 @@ public class WellnessGroups {
             for (Workshop w : s.sessions) {
                 if (s.preferences.contains(w)) {
                     preferredCount++;
+                    happiness++;
                 }
                 if (categories.contains(w.category)) {
                     System.out.println("There is a student in multiple sessions of the same type:");
@@ -162,7 +163,12 @@ public class WellnessGroups {
                 return -1;
             }
         }
-        return fewestPreferred;
+
+        if (fewestPreferred == 0) {
+            System.out.println("There are students who gave preferences and received none");
+            return -1;
+        }
+        return happiness;
     }
 }
 
