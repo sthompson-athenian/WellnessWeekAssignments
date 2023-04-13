@@ -126,8 +126,8 @@ public class WellnessGroups {
     }
 
     // A helper function for tests that determines whether an allocation of students is valid.
-    // If the allocation is valid returns the lowest number of preferred workshops a student
-    // received.
+    // If the allocation is valid, returns the lowest number of preferred workshops a student
+    // received (excluding students with no preferred workshops).
     // If the allocation is invalid, returns -1 and prints out the issue.
     private static int isValid(List<Student> students, List<Workshop> workshops) {
         int fewestPreferred = Integer.MAX_VALUE;
@@ -151,7 +151,9 @@ public class WellnessGroups {
                 }
                 categories.add(w.category);
             }
-            fewestPreferred = Math.min(fewestPreferred, preferredCount);
+            if (!s.preferences.isEmpty()) {
+                fewestPreferred = Math.min(fewestPreferred, preferredCount);
+            }
         }
         int maxSize = (int) Math.ceil((double)students.size() / (double)workshops.size());
         for (Workshop w : workshops) {
